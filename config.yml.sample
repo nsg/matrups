@@ -1,0 +1,19 @@
+---
+
+matrix:
+  host: "https://my.matrix.server.ltd"
+  userid: "@mybotname:matrix.server.ltd"
+  token: "MyLongAndSecretTokenFromMatrix..."
+  rooms:
+    - "!theRoomNameID:matrix.server.ltd"
+
+hangouts:
+  email: "my.google.bot.account@gmail.com"
+  password: "superSecretGoogleAccoundPassword"
+  token_file: "token.txt"
+
+bridge:
+  matrix_to:
+    "!theRoomNameID:matrix.server.ltd": "HangoutsRoomIdentifierID"
+  hangouts_to:
+    "HangoutsRoomIdentifierID": "!theRoomNameID:matrix.server.ltd"
