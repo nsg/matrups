@@ -8,4 +8,4 @@ class Message:
         self.message = message
 
     def get_message(self):
-        return "[{}] {}".format(self.sender, self.message)
+        return "❮{}❯ {}".format(self.sender, self.message)
