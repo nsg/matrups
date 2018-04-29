@@ -1,3 +1,5 @@
+# pylint: disable=missing-docstring
+
 import threading
 
 from matrix_client.client import MatrixClient
@@ -5,6 +7,7 @@ from matrix_client.client import MatrixClient
 from .message import Message
 
 class MatrixLoginCredentials():
+    # pylint: disable=too-few-public-methods
 
     def __init__(self, host, token, userid):
 
@@ -33,22 +36,22 @@ class Matrix:
 
         # Listen for events in all configured rooms
         for room in self.rooms:
-            r = self.client.join_room(room)
-            r.add_listener(self.listener)
+            joined_room = self.client.join_room(room)
+            joined_room.add_listener(self.listener)
 
         self.client.start_listener_thread()
         self.print_rooms()
         self.runner()
 
     def print_rooms(self):
-        ro = self.client.get_rooms()
-        for k, v in ro.items():
-            print("Matrix: {} ({})".format(k, v.display_name))
+        rooms = self.client.get_rooms()
+        for room_id, room in rooms.items():
+            print("Matrix: {} ({})".format(room_id, room.display_name))
 
     def runner(self):
-        t = threading.Timer(1.0, self.runner)
-        t.daemon = True
-        t.start()
+        worker_thread = threading.Timer(1.0, self.runner)
+        worker_thread.daemon = True
+        worker_thread.start()
 
         if not self.transport.to_matrix.empty():
             message = self.transport.to_matrix.get()

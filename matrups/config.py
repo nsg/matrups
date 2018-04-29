@@ -1,3 +1,5 @@
+# pylint: disable=missing-docstring
+
 import yaml
 
 class Config:

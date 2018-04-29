@@ -1,3 +1,5 @@
+# pylint: disable=missing-docstring,too-few-public-methods
+
 class Message:
 
     def __init__(self, destination, sender, message):

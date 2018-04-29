@@ -1,12 +1,15 @@
+# pylint: disable=missing-docstring
+
 import os
 
-import hangups
 import asyncio
+import hangups
 
 from .auth import Auth
 from .message import Message
 
 class HangoutsLoginCredentials():
+    # pylint: disable=too-few-public-methods
 
     def __init__(self, email, password, token_file):
 
@@ -47,28 +50,29 @@ class Hangouts():
                 await self.send(message.get_message(), message.destination)
 
     async def get_self_info(self):
-        rh=self.client.get_request_header()
-        si_req = hangups.hangouts_pb2.GetSelfInfoRequest(request_header=rh)
+        request_header = self.client.get_request_header()
+        si_req = hangups.hangouts_pb2.GetSelfInfoRequest(request_header=request_header)
         return await self.client.get_self_info(si_req)
 
     async def send(self, message, cid):
+        # pylint: disable=protected-access
         conversation = self.conversations.get(cid)
         segments = hangups.ChatMessageSegment.from_str(message)
         request = hangups.hangouts_pb2.SendChatMessageRequest(
-                request_header=self.client.get_request_header(),
-                event_request_header=conversation._get_event_request_header(),
-                message_content=hangups.hangouts_pb2.MessageContent(
-                    segment=[segment.serialize() for segment in segments]
-                    ),
-                annotation=[hangups.hangouts_pb2.EventAnnotation(type=0)]
-                )
+            request_header=self.client.get_request_header(),
+            event_request_header=conversation._get_event_request_header(),
+            message_content=hangups.hangouts_pb2.MessageContent(
+                segment=[segment.serialize() for segment in segments]
+                ),
+            annotation=[hangups.hangouts_pb2.EventAnnotation(type=0)]
+            )
         await self.client.send_chat_message(request)
 
     def loop(self):
         loop = asyncio.get_event_loop()
         loop.run_until_complete(asyncio.gather(
-                self.client.connect(),
-                self.runner()
+            self.client.connect(),
+            self.runner()
             ))
         loop.close()
 
@@ -88,11 +92,12 @@ class Hangouts():
                     self.transport.send_matrix(message)
 
     def is_message_event(self, update):
+        # pylint: disable=no-self-use
         if update.event_notification:
             event = update.event_notification.event
             if event.event_type == hangups.hangouts_pb2.EVENT_TYPE_REGULAR_CHAT_MESSAGE:
                 return True
-            return False
+        return False
 
     async def start(self):
         self.users, self.conversations = await hangups.build_user_conversation_list(self.client)

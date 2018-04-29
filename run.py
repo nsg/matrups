@@ -1,3 +1,5 @@
+# pylint: disable=missing-docstring
+
 from matrups.transport import Transport
 from matrups.matrix import Matrix, MatrixLoginCredentials
 from matrups.hangouts import Hangouts, HangoutsLoginCredentials
@@ -13,16 +15,13 @@ def main():
            config.matrix("rooms"),
            config.bridge("matrix_to"),
            transport
-        )
+          )
 
-    h = Hangouts(HangoutsLoginCredentials(config.hangouts("email"),
-                                          config.hangouts("password"),
-                                          config.hangouts("token_file")),
-                 config.bridge("hangouts_to"),
-                 transport)
-
-    h.loop()
+    Hangouts(HangoutsLoginCredentials(config.hangouts("email"),
+                                      config.hangouts("password"),
+                                      config.hangouts("token_file")),
+             config.bridge("hangouts_to"),
+             transport).loop()
 
 if __name__ == '__main__':
     main()
-

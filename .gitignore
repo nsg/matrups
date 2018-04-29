@@ -1,4 +1,5 @@
 /token.txt
 /config.yml
 /.env
+/.envdev
 __pycache__

@@ -1,9 +1,22 @@
-PIP = . .env/bin/activate && pip
-PYTHON = . .env/bin/activate && python
+ENV = . .env/bin/activate &&
+ENVDEV = . .envdev/bin/activate &&
 
 .env:
 	virtualenv -p python3 .env
-	${PIP} install -r requirements.txt
+	${ENV} pip install -r requirements.txt
+
+.envdev:
+	virtualenv -p python3 .envdev
+	${ENVDEV} pip install -r requirements.txt
+	${ENVDEV} pip install -r requirements.dev.txt
 
 run: .env
-	${PYTHON} run.py
+	${ENV} python run.py
+
+lint: .envdev
+	$(ENVDEV) pylint run.py
+	$(ENVDEV) pylint matrups/*.py
+
+clean:
+	rm -rf .env
+	rm -rf .envdev
