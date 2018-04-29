@@ -16,6 +16,7 @@ run: .env
 lint: .envdev
 	$(ENVDEV) pylint run.py
 	$(ENVDEV) pylint matrups/*.py
+	$(ENVDEV) yamllint config.sample.yml
 
 clean:
 	rm -rf .env
